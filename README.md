@@ -31,6 +31,10 @@ As stated ee run four experiments using google colab note four experiments
 
 To run the code and and notes books. Google colab is required, alternatively to have the ability to run on local machine using one needs to first open the file using google colab then opt for the option for to download the file as .py file.
 
+There are two google notebooks:
+1. Which builds and trains the Machine Learning models and LTSM RNN.
+2. Which builds and test the BERT transformer model.
+
 ### Prerequisites
 
 1. Change run type to GPU. We run BERT model on GPU.

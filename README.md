@@ -96,5 +96,5 @@ To run the notebook,one could run all cells under runtime or run each cell seper
 
 Your Name - Yolanda Nkalashe - u13193016@tuks.co.za
 
-Project Link: git@github.com:YolandaNkalashe25/COS802.git
+Project Link: git@github.com:YolandaNkalashe25/COS802-Project.git
 

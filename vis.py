@@ -248,7 +248,7 @@ def main():
                    
                   data=Bulk_data(Data_file)
 
-                  data_processed=data
+                  data_processed=preprocess(data)
                   
                   st.write(data_processed.head())
                   
@@ -276,50 +276,48 @@ def main():
                 
                    st.write(size)
                    st.write('Count of unique tweets')
-                   st.markdown('<style>h1{color: red;}</style>', unsafe_allow_html=True)
+                   
                   with col2:
-                    st.write('Count of unique tweets')
-                    st.markdown('<style>h1{color: red;}</style>', unsafe_allow_html=True)
+                   st.write('Count of unique tweets')
+                   st.markdown('<style>h1{color: red;}</style>', unsafe_allow_html=True)
                       
 
                   my_expander = st.beta_expander("Show Category and SA Catogory visual", expanded=True)
                   with my_expander:
-                  #if st.checkbox('Show Category and SA Catogory visual'):    
- 
                    st.subheader( "**Hash_Tags vs Topics Bar Graph**") 
-                   sns.set(rc={"figure.figsize":(10,5)})
+                   
                    
                    import matplotlib.pyplot as plt
                    
                    # PLotting category input query
-                   
+                   sns.set(rc={"figure.figsize":(10,5)})
                    fig= plt.figure()
                    ax = sns.countplot(y="input_query", data=data_cat,order=data_cat['input_query'].value_counts().index)
                    plt.xticks(rotation=45)
-# =============================================================================
-#  
-#                    for p in ax.patches:
-#                          height = p.get_height() 
-#                          width = p.get_width() 
-#                          ax.text(x = width+3, 
-#                          y = p.get_y()+(height/2),
-#                          s = "{:.0f}".format(width), 
-#                          va = "center")
-# =============================================================================
+ 
+                   for p in ax.patches:
+                         height = p.get_height() 
+                         width = p.get_width() 
+                         ax.text(x = width+3, 
+                         y = p.get_y()+(height/2),
+                         s = "{:.0f}".format(width), 
+                         va = "center")
+
                    st.pyplot(fig)   
-                  
+
                    def Cat_Model():
-                            import joblib
-                            pred_model = joblib.load('classifier_SACat.pkl.pkl')
-                            return pred_model
-                        
+                             import joblib
+                             pred_model = joblib.load('classifier_SACat.pkl.pkl')
+                             return pred_model
+ 
                    clean_cat=CategoriseSA(data_processed)
-                   st.write(clean_cat)
+                   st.write(clean_cat['statuses_without_stopwords'])
+      
                    #pred_model=Cat_Model() 
                    
-                   #categorise=pred_model.predict(clean_cat.statuses_without_stopwords)
+                   #categorise=Cat_Model.predict(clean_cat.statuses_without_stopwords)
                    
-                   #st.write(pred_model)  
+                   #st.write(categorise)  
 #                    categorise=categorise.tolist()
 #                    
 #                    df_class=pd.DataFrame(categorise,columns=["Class_Label"])

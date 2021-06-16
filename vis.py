@@ -248,7 +248,7 @@ def main():
                    
                   data=Bulk_data(Data_file)
 
-                  data_processed=preprocess(data)
+                  data_processed=data
                   
                   st.write(data_processed.head())
                   
@@ -378,63 +378,65 @@ def main():
                      webbrowser.open_new_tab(url)
 
                    
-                  my_expander_Text_inter = st.beta_expander("Interactive Text Analytics", expanded=True)
-                  with my_expander_Text_inter:  
-                     
-                   st.subheader('Interactive Unsupervised Learning on Microblogs')
-                   from sklearn.cluster import KMeans
-                   from sklearn.cluster import MiniBatchKMeans
-                   from sklearn.decomposition import PCA
-                   from sklearn.manifold import TSNE
-                   
-                   def cluster(Document, n_clusters):
-                       vectorizer_tfidf = TfidfVectorizer(stop_words='english')
-                       vectorizer_tfidf.fit(Document)
-                       X_tfidf = vectorizer_tfidf.transform(Document)
-     
-                       tfidf_feature_names = vectorizer_tfidf.get_feature_names()
-     
-                       pca=PCA(n_components=2)
-                       X_pca=pca.fit_transform(X_tfidf.toarray())
-     
-                       clf=MiniBatchKMeans(n_clusters=n_clusters,compute_labels=True)
-                       clf.fit(X_tfidf)
-                       within_cluster=clf.inertia_
-     
-                       cluster_labels = clf.predict(X_tfidf)
-     
-                       return X_pca, cluster_labels
-                       
-                   num_clusters=st.slider('Number of unsupervised clusters',min_value=3, max_value=10,step=1)
-                   Document=data_processed.statuses_text
-                   X_pca, cluster_labels=cluster(Document,num_clusters)
-             
-                   import matplotlib.pyplot as plt
-                   import numpy as np
-                   
-                   fig = plt.figure()
-                   ax=fig.add_subplot(projection='3d')
- 
-                   # Plot scatterplot data (20 2D points per colour) on the x and z axes.
-                   colors = ('r', 'g', 'b', 'k')
-# 
-#                   # Fixing random state for reproducibility
-                   np.random.seed(19680801)
- 
-                   x = X_pca[:,0]
-                   y = X_pca[:,1]
-#                   
-                   scatter=ax.scatter(x, y, zs=0, zdir='y', c=cluster_labels, label='points in (x, z)')
-#                   
-                   ax.legend()
-                   ax.set_xlabel('X')
-                   ax.set_ylabel('Y')
-                   ax.set_zlabel('Z')
-                   legend1 = ax.legend(*scatter.legend_elements(),
-                      loc="lower left")
-                   ax.add_artist(legend1)
-#                   
-                   st.write(fig)
+# =============================================================================
+#                   my_expander_Text_inter = st.beta_expander("Interactive Text Analytics", expanded=True)
+#                   with my_expander_Text_inter:  
+#                      
+#                    st.subheader('Interactive Unsupervised Learning on Microblogs')
+#                    from sklearn.cluster import KMeans
+#                    from sklearn.cluster import MiniBatchKMeans
+#                    from sklearn.decomposition import PCA
+#                    from sklearn.manifold import TSNE
+#                    
+#                    def cluster(Document, n_clusters):
+#                        vectorizer_tfidf = TfidfVectorizer(stop_words='english')
+#                        vectorizer_tfidf.fit(Document)
+#                        X_tfidf = vectorizer_tfidf.transform(Document)
+#      
+#                        tfidf_feature_names = vectorizer_tfidf.get_feature_names()
+#      
+#                        pca=PCA(n_components=2)
+#                        X_pca=pca.fit_transform(X_tfidf.toarray())
+#      
+#                        clf=MiniBatchKMeans(n_clusters=n_clusters,compute_labels=True)
+#                        clf.fit(X_tfidf)
+#                        within_cluster=clf.inertia_
+#      
+#                        cluster_labels = clf.predict(X_tfidf)
+#      
+#                        return X_pca, cluster_labels
+#                        
+#                    num_clusters=st.slider('Number of unsupervised clusters',min_value=3, max_value=10,step=1)
+#                    Document=data_processed.statuses_text
+#                    X_pca, cluster_labels=cluster(Document,num_clusters)
+#              
+#                    import matplotlib.pyplot as plt
+#                    import numpy as np
+#                    
+#                    fig = plt.figure()
+#                    ax=fig.add_subplot(projection='3d')
+#  
+#                    # Plot scatterplot data (20 2D points per colour) on the x and z axes.
+#                    colors = ('r', 'g', 'b', 'k')
+# # 
+# #                   # Fixing random state for reproducibility
+#                    np.random.seed(19680801)
+#  
+#                    x = X_pca[:,0]
+#                    y = X_pca[:,1]
+# #                   
+#                    scatter=ax.scatter(x, y, zs=0, zdir='y', c=cluster_labels, label='points in (x, z)')
+# #                   
+#                    ax.legend()
+#                    ax.set_xlabel('X')
+#                    ax.set_ylabel('Y')
+#                    ax.set_zlabel('Z')
+#                    legend1 = ax.legend(*scatter.legend_elements(),
+#                       loc="lower left")
+#                    ax.add_artist(legend1)
+# #                   
+#                    st.write(fig)
+# # =============================================================================
 # =============================================================================
               
 if __name__=='__main__':

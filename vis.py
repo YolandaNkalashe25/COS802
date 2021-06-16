@@ -244,7 +244,7 @@ def main():
                 if Data_file is None:
                    st.write("Check the data reference link ")
                 else:
-                  st.html(html_temp1, unsafe_allow_html=True)
+                  st.markdown(html_temp1, unsafe_allow_html=True)
                    #Full_Data().main_full()
                    
                   data=Bulk_data(Data_file)

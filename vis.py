@@ -318,7 +318,7 @@ def main():
                    
 
                    st.write('**SA vs Global Bar Graph**')
-                   fig= plt.figure()
+                   fig1= plt.figure()
                    ax = sns.countplot(y="Tweet_Category", data=df_cat)
 
                    for p in ax.patches:
@@ -328,7 +328,7 @@ def main():
                              y = p.get_y()+(height/2),
                              s = "{:.0f}".format(width), 
                              va = "center")
-                   st.pyplot()
+                   st.pyplot(fig1)
 
                       
 
@@ -372,87 +372,69 @@ def main():
              
  
                    url = 'https://htmlpreview.github.io/?https://github.com/YolandaNkalashe25/COS802-Project/blob/main/output_lda.html'
-#                   #vis=loads(vis)
+                   #vis=loads(vis)
                    import webbrowser
                    if st.button('Open browser'):
                      webbrowser.open_new_tab(url)
-# 
-#           
-# # =============================================================================
-# #                   import os
-# #                   import base64
-# #                   def get_binary_file_downloader_html(bin_file, file_label='File'):
-# #                     with open(bin_file, 'rb') as f:
-# #                      data = f.read()
-# #                      bin_str = base64.b64encode(data).decode()
-# #                      href = f'<a href="data:application/octet-stream;base64,{bin_str}" download="{os.path.basename(bin_file)}">Download {file_label}</a>'
-# #                      return href
-# #                  
-# #     
-# #                   st.markdown(get_binary_file_downloader_html(vis, 'Interactive Topic saliency plot'), unsafe_allow_html=True)
-# #                   #cat_check=st.checkbox("Generate SA vs Global Bar Graph",value = False)
-# #                   #if cat_check:
-# # =============================================================================
-#                   
-#                 my_expander_Text_inter = st.beta_expander("Interactive Text Analytics", expanded=True)
-#                 with my_expander_Text_inter:  
-#                 #if st.checkbox('nteractive Text Analytics'): 
-#                     
-#                   st.subheader('Interactive Unsupervised Learning on Microblogs')
-#                   import emoji
-#                   from sklearn.cluster import KMeans
-#                   from sklearn.cluster import MiniBatchKMeans
-#                   from sklearn.decomposition import PCA
-#                   from sklearn.manifold import TSNE
-#                   
-#                   def cluster(Document, n_clusters):
-#                       vectorizer_tfidf = TfidfVectorizer(stop_words='english')
-#                       vectorizer_tfidf.fit(Document)
-#                       X_tfidf = vectorizer_tfidf.transform(Document)
-#     
-#                       tfidf_feature_names = vectorizer_tfidf.get_feature_names()
-#     
-#                       pca=PCA(n_components=2)
-#                       X_pca=pca.fit_transform(X_tfidf.toarray())
-#     
-#                       clf=MiniBatchKMeans(n_clusters=n_clusters,compute_labels=True)
-#                       clf.fit(X_tfidf)
-#                       within_cluster=clf.inertia_
-#     
-#                       cluster_labels = clf.predict(X_tfidf)
-#     
-#                       return X_pca, cluster_labels
-#                       
-#                   num_clusters=st.slider('Number of unsupervised clusters',min_value=3, max_value=10,step=1)
-#                   Document=data_processed.statuses_text
-#                   X_pca, cluster_labels=cluster(Document,num_clusters)
-#             
-#                   import matplotlib.pyplot as plt
-#                   import numpy as np
-#                   
-#                   fig = plt.figure()
-#                   ax=fig.add_subplot(projection='3d')
-# 
-#                   # Plot scatterplot data (20 2D points per colour) on the x and z axes.
-#                   colors = ('r', 'g', 'b', 'k')
+
+                   
+                  my_expander_Text_inter = st.beta_expander("Interactive Text Analytics", expanded=True)
+                  with my_expander_Text_inter:  
+                     
+                   st.subheader('Interactive Unsupervised Learning on Microblogs')
+                   from sklearn.cluster import KMeans
+                   from sklearn.cluster import MiniBatchKMeans
+                   from sklearn.decomposition import PCA
+                   from sklearn.manifold import TSNE
+                   
+                   def cluster(Document, n_clusters):
+                       vectorizer_tfidf = TfidfVectorizer(stop_words='english')
+                       vectorizer_tfidf.fit(Document)
+                       X_tfidf = vectorizer_tfidf.transform(Document)
+     
+                       tfidf_feature_names = vectorizer_tfidf.get_feature_names()
+     
+                       pca=PCA(n_components=2)
+                       X_pca=pca.fit_transform(X_tfidf.toarray())
+     
+                       clf=MiniBatchKMeans(n_clusters=n_clusters,compute_labels=True)
+                       clf.fit(X_tfidf)
+                       within_cluster=clf.inertia_
+     
+                       cluster_labels = clf.predict(X_tfidf)
+     
+                       return X_pca, cluster_labels
+                       
+                   num_clusters=st.slider('Number of unsupervised clusters',min_value=3, max_value=10,step=1)
+                   Document=data_processed.statuses_text
+                   X_pca, cluster_labels=cluster(Document,num_clusters)
+             
+                   import matplotlib.pyplot as plt
+                   import numpy as np
+                   
+                   fig = plt.figure()
+                   ax=fig.add_subplot(projection='3d')
+ 
+                   # Plot scatterplot data (20 2D points per colour) on the x and z axes.
+                   colors = ('r', 'g', 'b', 'k')
 # 
 #                   # Fixing random state for reproducibility
-#                   np.random.seed(19680801)
-# 
-#                   x = X_pca[:,0]
-#                   y = X_pca[:,1]
+                   np.random.seed(19680801)
+ 
+                   x = X_pca[:,0]
+                   y = X_pca[:,1]
 #                   
-#                   scatter=ax.scatter(x, y, zs=0, zdir='y', c=cluster_labels, label='points in (x, z)')
+                   scatter=ax.scatter(x, y, zs=0, zdir='y', c=cluster_labels, label='points in (x, z)')
 #                   
-#                   ax.legend()
-#                   ax.set_xlabel('X')
-#                   ax.set_ylabel('Y')
-#                   ax.set_zlabel('Z')
-#                   legend1 = ax.legend(*scatter.legend_elements(),
-#                      loc="lower left")
-#                   ax.add_artist(legend1)
+                   ax.legend()
+                   ax.set_xlabel('X')
+                   ax.set_ylabel('Y')
+                   ax.set_zlabel('Z')
+                   legend1 = ax.legend(*scatter.legend_elements(),
+                      loc="lower left")
+                   ax.add_artist(legend1)
 #                   
-#                   st.write(fig)
+                   st.write(fig)
 # =============================================================================
               
 if __name__=='__main__':

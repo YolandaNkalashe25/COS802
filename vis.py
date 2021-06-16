@@ -249,6 +249,10 @@ def main():
                   data=Bulk_data(Data_file)
 
                   data_processed=preprocess(data)
+                  
+                  st.write(data_processed.head())
+                  
+                  data_cat=pd.DataFrame(data_processed['input_query'])
 
                   def hastag(row):
                       if(row['input_query']=='vaccine AND "South Africa"' or row['input_query']=='#vaccineSA' or row['input_query']=='#covidvaccine' or row['input_query']=='#VaccineforSouthAfrica' or row['input_query']=='#VaccineRolloutSA' or row['input_query']=='vaccine' ):
@@ -262,9 +266,9 @@ def main():
         
                       return val
                    
-                  data_processed['input_query']=data_processed.apply(hastag,axis=1)
+                  data_cat['input_query']=data_processed.apply(hastag,axis=1)
                    
-                  st.write(data_processed.head())
+                  
                   
                   html_temp1 = """ 
                            <div style ="background-color:yellow;padding:13px"> 
@@ -302,7 +306,7 @@ def main():
                    # PLotting category input query
                    
                    fig= plt.figure()
-                   ax = sns.countplot(y="input_query", data=data_processed,order=data_processed['input_query'].value_counts().index)
+                   ax = sns.countplot(y="input_query", data=data_cat,order=data_cat['input_query'].value_counts().index)
                    plt.xticks(rotation=45)
 # =============================================================================
 #  

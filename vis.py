@@ -236,10 +236,15 @@ def main():
                 
                 Data_file = pd.read_excel(url)
                 
+                html_temp1 = """ 
+                           <div style ="background-color:yellow;padding:13px"> 
+                          <h1 style ="color:black;text-align:Center;;">Visualization/Dashboard based on Trained data</h1> 
+                          </div> 
+                           """
                 if Data_file is None:
                    st.write("Check the data reference link ")
                 else:
-                  st.subheader("Visuals based on Trained data")
+                  st.html(html_temp1, unsafe_allow_html=True)
                    #Full_Data().main_full()
                    
                   data=Bulk_data(Data_file)
@@ -277,10 +282,13 @@ def main():
                   with col1:
 
                    size=len(data_processed['statuses_retweeted_status_id'].unique())
-                   st.markdown(html_temp1, unsafe_allow_html = True )
+                
                    st.write(size)
+                   st.write('Count of unique tweets')
+                   st.markdown('<style>h1{color: red;}</style>', unsafe_allow_html=True)
                   with col2:
-                      st.markdown(html_temp1, unsafe_allow_html = True )
+                    st.write('Count of unique tweets')
+                    st.markdown('<style>h1{color: red;}</style>', unsafe_allow_html=True)
                       
 
                   my_expander = st.beta_expander("Show Category and SA Catogory visual", expanded=True)
@@ -315,11 +323,12 @@ def main():
                             return pred_model
                         
                    clean_cat=CategoriseSA(data_processed)
+                   st.write(clean_cat)
+                   #pred_model=Cat_Model() 
                    
-                   pred_model=Cat_Model() 
+                   #categorise=pred_model.predict(clean_cat.statuses_without_stopwords)
                    
-                   categorise=pred_model.predict(clean_cat.statuses_without_stopwords)
-                   st.write(pred_model)  
+                   #st.write(pred_model)  
 #                    categorise=categorise.tolist()
 #                    
 #                    df_class=pd.DataFrame(categorise,columns=["Class_Label"])

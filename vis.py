@@ -46,7 +46,6 @@ nltk.download('stopwords')
 nltk.download('wordnet')
 from nltk.corpus import stopwords
 
-@st.cache()
 def preprocess(data_heading):
         null_dict={}
         nulls_all=data_heading.isnull().sum().to_frame()
@@ -111,7 +110,7 @@ def preprocess(data_heading):
 
         return Final_Dataset
 
-@st.cache()
+
 def CategoriseSA(Final_Dataset):
         Final_Dataset['statuses_text'] = Final_Dataset['statuses_text'].str.lower()
         Categorisation_dataset=Final_Dataset[(Final_Dataset['input_query']!='nfsas') & (Final_Dataset['input_query']!='#openthechurches')]
@@ -192,7 +191,7 @@ def CategoriseSA(Final_Dataset):
 
         return  Data_Models #best_model
 
-@st.cache()   
+  
 def clean_text(text):
         documents = []
         from nltk.stem import WordNetLemmatizer

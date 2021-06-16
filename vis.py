@@ -269,18 +269,6 @@ def main():
                   data_cat['input_query']=data_processed.apply(hastag,axis=1)
                     
                                      
-                  col1, col2 = st.beta_columns(2)
-                  with col1:
-
-                   size=len(data_processed['statuses_retweeted_status_id'].unique())
-                
-                   st.write(size)
-                   st.write('Count of unique tweets')
-                   
-                  with col2:
-                   st.write('Count of unique tweets')
-                   st.markdown('<style>h1{color: red;}</style>', unsafe_allow_html=True)
-                      
 
                   my_expander = st.beta_expander("Show Category and SA Catogory visual", expanded=True)
                   with my_expander:
@@ -315,7 +303,7 @@ def main():
       
                    pred_model=Cat_Model() 
                    
-                   categorise=Cat_Model.predict(clean_cat['statuses_without_stopwords'])
+                   categorise=pred_model.predict(clean_cat['statuses_without_stopwords'])
                    categorise=categorise.tolist()
                     
                    df_class=pd.DataFrame(categorise,columns=["Class_Label"])

@@ -311,87 +311,83 @@ def main():
                              return pred_model
  
                    clean_cat=CategoriseSA(data_processed)
-                   st.write(clean_cat['statuses_without_stopwords'])
+   
       
-                   #pred_model=Cat_Model() 
+                   pred_model=Cat_Model() 
                    
-                   #categorise=Cat_Model.predict(clean_cat.statuses_without_stopwords)
+                   categorise=Cat_Model.predict(clean_cat['statuses_without_stopwords'])
+                   categorise=categorise.tolist()
+                    
+                   df_class=pd.DataFrame(categorise,columns=["Class_Label"])
+                   df_class=df_class.reset_index(drop=True)
+                    
+                   import numpy as np
+                    
+                   df_class['Tweet_Category'] = np.where((df_class['Class_Label'] ==0), 'Global Tweet', 'S.A Tweet')
+        
+                   df_cat=pd.concat([clean_cat,df_class],axis=1)
+
                    
-                   #st.write(categorise)  
-#                    categorise=categorise.tolist()
-#                    
-#                    df_class=pd.DataFrame(categorise,columns=["Class_Label"])
-#                    df_class=df_class.reset_index(drop=True)
-#                    
-#                    import numpy as np
-#                    
-#                    df_class['Tweet_Category'] = np.where((df_class['Class_Label'] ==0), 'Global Tweet', 'S.A Tweet')
-#        
-#                    df_cat=pd.concat([clean_cat,df_class],axis=1)
-#                    
-#                    
-# =============================================================================
-                   
-# =============================================================================
-#                    st.write('**SA vs Global Bar Graph**')
-#                    
-#                   
-#                    ax = sns.countplot(y="Tweet_Category", data=df_cat)
-# 
-#                    for p in ax.patches:
-#                              height = p.get_height() 
-#                              width = p.get_width() 
-#                              ax.text(x = width+3, 
-#                              y = p.get_y()+(height/2),
-#                              s = "{:.0f}".format(width), 
-#                              va = "center")
-#                    st.pyplot()
-# =============================================================================
+
+                   st.write('**SA vs Global Bar Graph**')
+                   fig= plt.figure()
+                   ax = sns.countplot(y="Tweet_Category", data=df_cat)
+
+                   for p in ax.patches:
+                             height = p.get_height() 
+                             width = p.get_width() 
+                             ax.text(x = width+3, 
+                             y = p.get_y()+(height/2),
+                             s = "{:.0f}".format(width), 
+                             va = "center")
+                   st.pyplot()
+
                       
-# =============================================================================
-#                 my_expander_Text = st.beta_expander("Show Text Analytics", expanded=True)
-#                 with my_expander_Text:
-#                 #if st.checkbox('Show Text Analytics'):   
-#                   from wordcloud import WordCloud
-#                   import matplotlib.pyplot as plt
-#                   
-#                   st.subheader("**Tweets WordCloud**")
-#                   data_processed_text=clean_text(data_processed.statuses_text)
-#   
-#                   st.set_option('deprecation.showPyplotGlobalUse',False)  
-#                   text=" ".join(clean_text for clean_text in data_processed_text.clean_text)
-#                   wordcloud = WordCloud(max_words=100).generate(text)
-# 
+
+
+                  my_expander_Text = st.beta_expander("Show Text Analytics", expanded=True)
+                  with my_expander_Text:
+  
+                   from wordcloud import WordCloud
+                   import matplotlib.pyplot as plt
+                   
+                   st.subheader("**Tweets WordCloud**")
+                   data_processed_text=clean_text(data_processed.statuses_text)
+   
+                   st.set_option('deprecation.showPyplotGlobalUse',False)  
+                   text=" ".join(clean_text for clean_text in data_processed_text.clean_text)
+                   wordcloud = WordCloud(max_words=100).generate(text)
+ 
 #                   # Display the generated image:
-#                   plt.imshow(wordcloud, interpolation='bilinear')
-#                   plt.axis("off")
-#                   plt.title('Prevalent words in Tweets')
-#                   plt.show()
-#                   st.pyplot() 
-#                   
-#                   from PIL import Image
-#                   st.subheader('Visual common words in each topic')
-#                   st.write('The below visual shows the top salinent words in each topic. To have the interactive plot please click on link below visual')
-#                   t_num=st.slider('Show most common words in each topic',max_value=3)
-#                   if t_num==1:
-#                       image = Image.open('Topic 2.jpg')
-#                       st.image(image, caption='Topic 1 most used words')
-#                   elif t_num==2:
-#                       image = Image.open('Topic3.jpg')
-#                       st.image(image, caption='Topic 2 most used words')
-#                   elif t_num==3:
-#                       image = Image.open('Topic1.jpg')
-#                       st.image(image, caption='Topic 3 most used words')
-#                   else:
-#                      image = Image.open('Topic0.jpg')
-#                      st.image(image, caption='Topic 3 most used words')
-#             
-# 
-#                   url = 'https://htmlpreview.github.io/?https://github.com/YolandaNkalashe25/MIT805-Exam/blob/main/output_lda.html'
+                   plt.imshow(wordcloud, interpolation='bilinear')
+                   plt.axis("off")
+                   plt.title('Prevalent words in Tweets')
+                   plt.show()
+                   st.pyplot() 
+                   
+                   from PIL import Image
+                   st.subheader('Visual common words in each topic')
+                   st.write('The below visual shows the top salinent words in each topic. To have the interactive plot please click on link below visual')
+                   t_num=st.slider('Show most common words in each topic',max_value=3)
+                   if t_num==1:
+                       image = Image.open('Topic 2.jpg')
+                       st.image(image, caption='Topic 1 most used words')
+                   elif t_num==2:
+                       image = Image.open('Topic3.jpg')
+                       st.image(image, caption='Topic 2 most used words')
+                   elif t_num==3:
+                       image = Image.open('Topic1.jpg')
+                       st.image(image, caption='Topic 3 most used words')
+                   else:
+                      image = Image.open('Topic0.jpg')
+                      st.image(image, caption='Topic 3 most used words')
+             
+ 
+                   url = 'https://htmlpreview.github.io/?https://github.com/YolandaNkalashe25/COS802-Project/blob/main/output_lda.html'
 #                   #vis=loads(vis)
-#                   import webbrowser
-#                   if st.button('Open browser'):
-#                     webbrowser.open_new_tab(url)
+                   import webbrowser
+                   if st.button('Open browser'):
+                     webbrowser.open_new_tab(url)
 # 
 #           
 # # =============================================================================

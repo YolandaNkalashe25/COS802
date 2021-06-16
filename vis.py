@@ -46,6 +46,7 @@ nltk.download('stopwords')
 nltk.download('wordnet')
 from nltk.corpus import stopwords
 
+@st.cache()
 def preprocess(data_heading):
         null_dict={}
         nulls_all=data_heading.isnull().sum().to_frame()
@@ -110,6 +111,7 @@ def preprocess(data_heading):
 
         return Final_Dataset
 
+@st.cache()
 def CategoriseSA(Final_Dataset):
         Final_Dataset['statuses_text'] = Final_Dataset['statuses_text'].str.lower()
         Categorisation_dataset=Final_Dataset[(Final_Dataset['input_query']!='nfsas') & (Final_Dataset['input_query']!='#openthechurches')]
@@ -190,8 +192,8 @@ def CategoriseSA(Final_Dataset):
 
         return  Data_Models #best_model
 
-    
-def clean_text(self,text):
+@st.cache()   
+def clean_text(text):
         documents = []
         from nltk.stem import WordNetLemmatizer
 
@@ -244,19 +246,7 @@ def main():
 
                   data_processed=preprocess(data)
 
-                  #size=len(data_processed['statuses_retweeted_status_id'].unique())
-                  #st.markdown('<p class="big-font">Count of unique tweets</p>', unsafe_allow_html=True)
-                  #st.write(size)
-                  
-                  st.write(data_processed.head())
-
-                  my_expander = st.beta_expander("Show Category and SA Catogory visual", expanded=True)
-                  with my_expander:
-                  #if st.checkbox('Show Category and SA Catogory visual'):    
- 
-                   st.subheader( "**Hash_Tags vs Topics Bar Graph**") 
-                   sns.set(rc={"figure.figsize":(10,5)})
-                   def hastag(row):
+                  def hastag(row):
                       if(row['input_query']=='vaccine AND "South Africa"' or row['input_query']=='#vaccineSA' or row['input_query']=='#covidvaccine' or row['input_query']=='#VaccineforSouthAfrica' or row['input_query']=='#VaccineRolloutSA' or row['input_query']=='vaccine' ):
                         val="#T_Vaccine"
                       elif(row['input_query']=='"South Africa"' or row['input_query']=='#southafrica' or row['input_query']=='#SAlockdown'):  
@@ -268,7 +258,37 @@ def main():
         
                       return val
                    
-                   data_processed['input_query']=data_processed.apply(hastag,axis=1)
+                  data_processed['input_query']=data_processed.apply(hastag,axis=1)
+                   
+                  st.write(data_processed.head())
+                  
+                  html_temp1 = """ 
+                           <div style ="background-color:yellow;padding:13px"> 
+                          <h1 style ="color:black;text-align:Center;;">Count of unique tweets</h1> 
+                          </div> 
+                           """
+                  html_temp2 = """ 
+                           <div style ="background-color:yellow;padding:13px"> 
+                          <h1 style ="color:black;text-align:Center;;">highest retweeted microblog</h1> 
+                          </div> 
+                           """
+                           
+                  col1, col2 = st.beta_columns(2)
+                  with col1:
+
+                   size=len(data_processed['statuses_retweeted_status_id'].unique())
+                   st.markdown(html_temp1, unsafe_allow_html = True )
+                   st.write(size)
+                  with col2:
+                      st.markdown(html_temp1, unsafe_allow_html = True )
+                      
+
+                  my_expander = st.beta_expander("Show Category and SA Catogory visual", expanded=True)
+                  with my_expander:
+                  #if st.checkbox('Show Category and SA Catogory visual'):    
+ 
+                   st.subheader( "**Hash_Tags vs Topics Bar Graph**") 
+                   sns.set(rc={"figure.figsize":(10,5)})
                    
                    import matplotlib.pyplot as plt
                    
@@ -287,7 +307,7 @@ def main():
 #                          s = "{:.0f}".format(width), 
 #                          va = "center")
 # =============================================================================
-                   st.pyplot()   
+                   st.pyplot(fig)   
                   
                    def Cat_Model():
                             import joblib
@@ -298,10 +318,8 @@ def main():
                    
                    pred_model=Cat_Model() 
                    
-                   st.write(pred_model)
-# =============================================================================
-#                    categorise=pred_model.predict(clean_cat.statuses_without_stopwords)
-#                    
+                   categorise=pred_model.predict(clean_cat.statuses_without_stopwords)
+                   st.write(pred_model)  
 #                    categorise=categorise.tolist()
 #                    
 #                    df_class=pd.DataFrame(categorise,columns=["Class_Label"])
